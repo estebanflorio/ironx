@@ -14,11 +14,19 @@ export function SetInput({ setNumber, suggestedWeight, suggestedReps, onSave }: 
   const [saved, setSaved] = useState(false);
 
   const handleSave = () => {
-    if (!weight || !reps) return;
+    if (!weight || !reps || saved) return;
     onSave({ setNumber, weight: parseFloat(weight), reps: parseInt(reps, 10) });
     setSaved(true);
-    setWeight(suggestedWeight ? String(suggestedWeight) : '');
-    setReps(suggestedReps ? String(suggestedReps) : '');
+  };
+
+  const handleWeightChange = (value: string) => {
+    setWeight(value);
+    setSaved(false);
+  };
+
+  const handleRepsChange = (value: string) => {
+    setReps(value);
+    setSaved(false);
   };
 
   return (
@@ -34,20 +42,21 @@ export function SetInput({ setNumber, suggestedWeight, suggestedReps, onSave }: 
         placeholder="kg"
         inputMode="decimal"
         value={weight}
-        onChange={(e) => setWeight(e.target.value)}
+        onChange={(e) => handleWeightChange(e.target.value)}
       />
       <input
         className="w-16 rounded-md border border-border bg-raised px-2 py-2 text-center font-mono text-sm text-paper placeholder:text-muted focus:border-chalk"
         placeholder="reps"
         inputMode="numeric"
         value={reps}
-        onChange={(e) => setReps(e.target.value)}
+        onChange={(e) => handleRepsChange(e.target.value)}
       />
       <button
         onClick={handleSave}
-        className="ml-auto rounded-md bg-chalk px-3 py-2 font-mono text-xs font-bold uppercase text-ink transition-opacity hover:opacity-90 active:opacity-75"
+        disabled={saved}
+        className="ml-auto rounded-md bg-chalk px-3 py-2 font-mono text-xs font-bold uppercase text-ink transition-opacity hover:opacity-90 active:opacity-75 disabled:opacity-40"
       >
-        OK
+        {saved ? '✓' : 'OK'}
       </button>
     </div>
   );

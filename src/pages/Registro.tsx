@@ -10,6 +10,7 @@ export default function Registro() {
   const { logSession } = useSessions();
   const [activeRoutine, setActiveRoutine] = useState<Routine | null>(null);
   const [logs, setLogs] = useState<Record<string, SetLog[]>>({});
+  const [extraSets, setExtraSets] = useState<Record<string, number>>({});
   const [saved, setSaved] = useState(false);
 
   const totalSetsLogged = useMemo(
@@ -34,6 +35,7 @@ export default function Registro() {
               onClick={() => {
                 setActiveRoutine(r);
                 setLogs({});
+                setExtraSets({});
                 setSaved(false);
               }}
               className="flex items-center justify-between rounded-2xl border border-border bg-surface p-4 text-left transition-colors hover:border-chalk/60"
@@ -114,7 +116,7 @@ export default function Registro() {
           </div>
 
           <div className="flex flex-col divide-y divide-border/60">
-            {Array.from({ length: Math.max(ex.targetSets, (logs[ex.exerciseId] ?? []).length + 1) }).map((_, i) => (
+            {Array.from({ length: ex.targetSets + (extraSets[ex.exerciseId] ?? 0) }).map((_, i) => (
               <SetInput
                 key={i}
                 setNumber={i + 1}
@@ -124,6 +126,13 @@ export default function Registro() {
               />
             ))}
           </div>
+
+          <button
+            onClick={() => setExtraSets((prev) => ({ ...prev, [ex.exerciseId]: (prev[ex.exerciseId] ?? 0) + 1 }))}
+            className="self-start font-mono text-[11px] uppercase tracking-widest2 text-muted hover:text-chalk"
+          >
+            + Agregar serie extra
+          </button>
 
           <RestTimer defaultSeconds={ex.restSeconds} />
         </div>
