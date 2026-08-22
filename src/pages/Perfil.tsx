@@ -87,35 +87,35 @@ export default function Perfil() {
           />
         </label>
 
-        <div className="flex gap-2">
-          <label className="flex flex-1 flex-col gap-1">
-            <span className="font-mono text-[10px] uppercase tracking-widest2 text-muted">Altura (cm)</span>
+        <div className="grid grid-cols-3 gap-2">
+          <label className="flex min-w-0 flex-col gap-1">
+            <span className="truncate font-mono text-[10px] uppercase tracking-widest2 text-muted">Altura (cm)</span>
             <input
               type="number"
               inputMode="numeric"
-              className="rounded-md border border-border bg-raised px-3 py-2.5 text-center font-mono text-sm text-paper focus:border-chalk"
+              className="w-full min-w-0 rounded-md border border-border bg-raised px-2 py-2.5 text-center font-mono text-sm text-paper focus:border-chalk"
               value={heightCm}
               onChange={(e) => setHeightCm(e.target.value)}
               placeholder="175"
             />
           </label>
-          <label className="flex flex-1 flex-col gap-1">
-            <span className="font-mono text-[10px] uppercase tracking-widest2 text-muted">Año nac.</span>
+          <label className="flex min-w-0 flex-col gap-1">
+            <span className="truncate font-mono text-[10px] uppercase tracking-widest2 text-muted">Año nac.</span>
             <input
               type="number"
               inputMode="numeric"
-              className="rounded-md border border-border bg-raised px-3 py-2.5 text-center font-mono text-sm text-paper focus:border-chalk"
+              className="w-full min-w-0 rounded-md border border-border bg-raised px-2 py-2.5 text-center font-mono text-sm text-paper focus:border-chalk"
               value={birthYear}
               onChange={(e) => setBirthYear(e.target.value)}
               placeholder="1995"
             />
           </label>
-          <label className="flex flex-1 flex-col gap-1">
-            <span className="font-mono text-[10px] uppercase tracking-widest2 text-muted">Objetivo (kg)</span>
+          <label className="flex min-w-0 flex-col gap-1">
+            <span className="truncate font-mono text-[10px] uppercase tracking-widest2 text-muted">Objetivo (kg)</span>
             <input
               type="number"
               inputMode="decimal"
-              className="rounded-md border border-border bg-raised px-3 py-2.5 text-center font-mono text-sm text-paper focus:border-chalk"
+              className="w-full min-w-0 rounded-md border border-border bg-raised px-2 py-2.5 text-center font-mono text-sm text-paper focus:border-chalk"
               value={goalWeightKg}
               onChange={(e) => setGoalWeightKg(e.target.value)}
               placeholder="80"
@@ -146,11 +146,11 @@ export default function Perfil() {
           {profile.currentWeightKg ? `${profile.currentWeightKg} kg` : '—'}
         </p>
 
-        <div className="flex gap-2">
+        <div className="flex min-w-0 gap-2">
           <input
             type="number"
             inputMode="decimal"
-            className="flex-1 rounded-md border border-border bg-raised px-3 py-2.5 text-center font-mono text-sm text-paper placeholder:text-muted focus:border-chalk"
+            className="min-w-0 flex-1 rounded-md border border-border bg-raised px-3 py-2.5 text-center font-mono text-sm text-paper placeholder:text-muted focus:border-chalk"
             placeholder="Peso de hoy (kg)"
             value={newWeight}
             onChange={(e) => setNewWeight(e.target.value)}
@@ -158,7 +158,7 @@ export default function Perfil() {
           <button
             onClick={handleLogWeight}
             disabled={loggingWeight || !newWeight}
-            className="rounded-md bg-chalk px-4 py-2.5 font-mono text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90 disabled:opacity-40"
+            className="flex-shrink-0 rounded-md bg-chalk px-4 py-2.5 font-mono text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90 disabled:opacity-40"
           >
             Registrar
           </button>

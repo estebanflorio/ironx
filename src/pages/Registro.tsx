@@ -108,9 +108,11 @@ export default function Registro() {
 
       {activeRoutine.exercises.map((ex) => (
         <div key={ex.exerciseId} className="flex flex-col gap-3 rounded-2xl border border-border bg-surface p-4">
-          <div className="flex items-baseline justify-between">
-            <p className="font-display text-lg uppercase tracking-tight text-paper">{ex.exerciseName}</p>
-            <p className="font-mono text-xs text-muted">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+            <p className="min-w-0 break-words font-display text-lg uppercase tracking-tight text-paper">
+              {ex.exerciseName}
+            </p>
+            <p className="flex-shrink-0 font-mono text-xs text-muted">
               objetivo {ex.targetSets}×{ex.targetReps} · {ex.targetWeight}kg
             </p>
           </div>

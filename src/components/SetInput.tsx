@@ -30,22 +30,22 @@ export function SetInput({ setNumber, suggestedWeight, suggestedReps, onSave }: 
   };
 
   return (
-    <div className="flex items-center gap-2 py-1">
-      <div className="flex w-9 flex-shrink-0 items-center justify-center">
+    <div className="flex min-w-0 items-center gap-1.5 py-1">
+      <div className="flex w-6 flex-shrink-0 items-center justify-center">
         <ChalkTick done={saved} />
       </div>
-      <span className="w-14 flex-shrink-0 font-mono text-xs uppercase tracking-wide text-muted">
-        Serie {setNumber}
+      <span className="w-9 flex-shrink-0 font-mono text-[11px] uppercase tracking-wide text-muted">
+        S{setNumber}
       </span>
       <input
-        className="w-16 rounded-md border border-border bg-raised px-2 py-2 text-center font-mono text-sm text-paper placeholder:text-muted focus:border-chalk"
+        className="w-0 min-w-0 flex-1 rounded-md border border-border bg-raised px-1 py-2 text-center font-mono text-sm text-paper placeholder:text-muted focus:border-chalk"
         placeholder="kg"
         inputMode="decimal"
         value={weight}
         onChange={(e) => handleWeightChange(e.target.value)}
       />
       <input
-        className="w-16 rounded-md border border-border bg-raised px-2 py-2 text-center font-mono text-sm text-paper placeholder:text-muted focus:border-chalk"
+        className="w-0 min-w-0 flex-1 rounded-md border border-border bg-raised px-1 py-2 text-center font-mono text-sm text-paper placeholder:text-muted focus:border-chalk"
         placeholder="reps"
         inputMode="numeric"
         value={reps}
@@ -54,7 +54,7 @@ export function SetInput({ setNumber, suggestedWeight, suggestedReps, onSave }: 
       <button
         onClick={handleSave}
         disabled={saved}
-        className="ml-auto rounded-md bg-chalk px-3 py-2 font-mono text-xs font-bold uppercase text-ink transition-opacity hover:opacity-90 active:opacity-75 disabled:opacity-40"
+        className="flex-shrink-0 rounded-md bg-chalk px-3 py-2 font-mono text-xs font-bold uppercase text-ink transition-opacity hover:opacity-90 active:opacity-75 disabled:opacity-40"
       >
         {saved ? '✓' : 'OK'}
       </button>

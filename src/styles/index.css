@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 @layer base {
+  html,
+  body,
+  #root {
+    overflow-x: hidden;
+    width: 100%;
+  }
   html {
     -webkit-tap-highlight-color: transparent;
   }

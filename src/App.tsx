@@ -31,16 +31,16 @@ export default function App() {
   return (
     <BrowserRouter>
       <div className="flex min-h-screen flex-col bg-ink">
-        <header className="safe-top flex items-start justify-between border-b border-border px-5 pb-4">
-          <div>
-            <p className="font-mono text-[11px] uppercase tracking-widest2 text-muted">Registro de entrenamiento</p>
+        <header className="safe-top flex items-start justify-between gap-3 border-b border-border px-5 pb-4">
+          <div className="min-w-0">
+            <p className="truncate font-mono text-[11px] uppercase tracking-widest2 text-muted">Registro de entrenamiento</p>
             <h1 className="font-display text-3xl uppercase tracking-tightest text-paper">
               Iron<span className="text-chalk">X</span>
             </h1>
           </div>
           <button
             onClick={signOut}
-            className="mt-1 font-mono text-[10px] uppercase tracking-widest2 text-muted hover:text-ember"
+            className="mt-1 flex-shrink-0 font-mono text-[10px] uppercase tracking-widest2 text-muted hover:text-ember"
           >
             Salir
           </button>

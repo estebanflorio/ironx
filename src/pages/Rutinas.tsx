@@ -102,9 +102,9 @@ export default function Rutinas() {
           <div className="flex flex-col gap-3">
             {exercises.map((ex, i) => (
               <div key={i} className="flex flex-col gap-2 rounded-lg border border-border/60 p-3">
-                <div className="flex items-center gap-2">
+                <div className="flex min-w-0 items-center gap-2">
                   <input
-                    className="flex-1 rounded-md border border-border bg-raised px-3 py-2 font-body text-sm text-paper placeholder:text-muted focus:border-chalk"
+                    className="min-w-0 flex-1 rounded-md border border-border bg-raised px-3 py-2 font-body text-sm text-paper placeholder:text-muted focus:border-chalk"
                     placeholder="Ejercicio (ej. Press banca)"
                     value={ex.exerciseName}
                     onChange={(e) => updateExercise(i, { exerciseName: e.target.value })}
@@ -112,13 +112,13 @@ export default function Rutinas() {
                   {exercises.length > 1 && (
                     <button
                       onClick={() => removeExercise(i)}
-                      className="font-mono text-[11px] uppercase tracking-widest2 text-ember/80 hover:text-ember"
+                      className="flex-shrink-0 font-mono text-[11px] uppercase tracking-widest2 text-ember/80 hover:text-ember"
                     >
                       Quitar
                     </button>
                   )}
                 </div>
-                <div className="flex gap-2">
+                <div className="grid grid-cols-2 gap-2">
                   <LabeledNumber label="Series" value={ex.targetSets} onChange={(v) => updateExercise(i, { targetSets: v })} />
                   <LabeledNumber label="Reps" value={ex.targetReps} onChange={(v) => updateExercise(i, { targetReps: v })} />
                   <LabeledNumber
@@ -179,12 +179,12 @@ export default function Rutinas() {
                 </button>
               </div>
 
-              <div className="flex-1">
+              <div className="min-w-0 flex-1">
                 <p className="font-display text-lg uppercase tracking-tight text-paper">{r.name}</p>
                 <p className="font-mono text-xs text-muted">
                   {r.exercises.length} {r.exercises.length === 1 ? 'ejercicio' : 'ejercicios'}
                 </p>
-                <p className="mt-1 font-mono text-[11px] text-muted/80">
+                <p className="mt-1 break-words font-mono text-[11px] text-muted/80">
                   {r.exercises
                     .slice(0, 3)
                     .map((ex) => `${ex.exerciseName} ${ex.targetWeight}kg`)
@@ -193,7 +193,7 @@ export default function Rutinas() {
                 </p>
               </div>
 
-              <div className="flex flex-col items-end justify-between">
+              <div className="flex flex-shrink-0 flex-col items-end justify-between gap-1">
                 <button
                   onClick={() => startEdit(r)}
                   className="font-mono text-xs uppercase tracking-widest2 text-muted hover:text-chalk"
@@ -217,11 +217,11 @@ export default function Rutinas() {
 
 function LabeledNumber({ label, value, onChange }: { label: string; value: number; onChange: (v: number) => void }) {
   return (
-    <label className="flex flex-1 flex-col gap-1">
-      <span className="font-mono text-[10px] uppercase tracking-widest2 text-muted">{label}</span>
+    <label className="flex min-w-0 flex-col gap-1">
+      <span className="truncate font-mono text-[10px] uppercase tracking-widest2 text-muted">{label}</span>
       <input
         type="number"
-        className="rounded-md border border-border bg-raised px-2 py-2 text-center font-mono text-sm text-paper focus:border-chalk"
+        className="w-full min-w-0 rounded-md border border-border bg-raised px-2 py-2 text-center font-mono text-sm text-paper focus:border-chalk"
         value={value}
         onChange={(e) => onChange(Number(e.target.value) || 0)}
       />
