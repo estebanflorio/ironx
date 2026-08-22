@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="bgGlow" cx="50%" cy="50%" r="75%">
+      <stop offset="0%" stop-color="#1c2010"/>
+      <stop offset="100%" stop-color="#14161A"/>
+    </radialGradient>
+
+    <linearGradient id="edgeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E8FFB0"/>
+      <stop offset="45%" stop-color="#C9F31D"/>
+      <stop offset="100%" stop-color="#8FB010"/>
+    </linearGradient>
+
+    <linearGradient id="faceGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5B6B12"/>
+      <stop offset="35%" stop-color="#EFFFC0"/>
+      <stop offset="55%" stop-color="#C9F31D"/>
+      <stop offset="100%" stop-color="#3E4A0C"/>
+    </linearGradient>
+
+    <linearGradient id="faceGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#5B6B12"/>
+      <stop offset="35%" stop-color="#EFFFC0"/>
+      <stop offset="55%" stop-color="#C9F31D"/>
+      <stop offset="100%" stop-color="#3E4A0C"/>
+    </linearGradient>
+
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="9" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="512" height="512" fill="url(#bgGlow)"/>
+
+  <g filter="url(#glow)" opacity="0.9">
+    <path d="M96 76 L226 256 L96 436 L166 436 L256 306 L346 436 L416 436 L286 256 L416 76 L346 76 L256 206 L166 76 Z"
+          fill="none" stroke="#C9F31D" stroke-width="10" stroke-linejoin="round"/>
+  </g>
+
+  <path d="M96 76 L166 76 L426 436 L356 436 Z" fill="url(#faceGrad)" stroke="url(#edgeGrad)" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M416 76 L346 76 L86 436 L156 436 Z" fill="url(#faceGrad2)" stroke="url(#edgeGrad)" stroke-width="6" stroke-linejoin="round"/>
+
+  <path d="M256 226 L256 286" stroke="#F4FFDD" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
+
+  <path d="M96 76 L166 76 L146 116 Z" fill="#F4FFDD" opacity="0.85"/>
+  <path d="M416 76 L346 76 L366 116 Z" fill="#F4FFDD" opacity="0.85"/>
+  <path d="M356 436 L426 436 L396 396 Z" fill="#F4FFDD" opacity="0.55"/>
+  <path d="M156 436 L86 436 L116 396 Z" fill="#F4FFDD" opacity="0.55"/>
+</svg>
