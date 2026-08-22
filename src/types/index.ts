@@ -41,3 +41,18 @@ export interface Session {
   date: number;
   exercises: ExerciseLog[];
 }
+
+export interface WeightEntry {
+  date: number;
+  weightKg: number;
+}
+
+export interface UserProfile {
+  displayName: string;
+  heightCm: number | null;
+  currentWeightKg: number | null;
+  goalWeightKg: number | null;
+  birthYear: number | null;
+  weightHistory: WeightEntry[];
+  updatedAt: number;
+}

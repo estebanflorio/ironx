@@ -2,13 +2,15 @@ import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
 import Rutinas from './pages/Rutinas';
 import Registro from './pages/Registro';
 import Progreso from './pages/Progreso';
+import Perfil from './pages/Perfil';
 import Login from './pages/Login';
 import { useAuth } from './hooks/useAuth';
 
 const TABS = [
   { to: '/', label: 'Rutinas', icon: IconClipboard, end: true },
   { to: '/registro', label: 'Registro', icon: IconBarbell, end: false },
-  { to: '/progreso', label: 'Progreso', icon: IconChart, end: false }
+  { to: '/progreso', label: 'Progreso', icon: IconChart, end: false },
+  { to: '/perfil', label: 'Perfil', icon: IconUser, end: false }
 ];
 
 export default function App() {
@@ -49,6 +51,7 @@ export default function App() {
             <Route path="/" element={<Rutinas />} />
             <Route path="/registro" element={<Registro />} />
             <Route path="/progreso" element={<Progreso />} />
+            <Route path="/perfil" element={<Perfil />} />
           </Routes>
         </main>
 
@@ -106,6 +109,15 @@ function IconChart({ active }: { active: boolean }) {
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.2 : 1.6}>
       <path d="M4 20V10M11 20V4M18 20v-7" strokeLinecap="round" />
       <path d="M3 20h18" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IconUser({ active }: { active: boolean }) {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.2 : 1.6}>
+      <circle cx="12" cy="8" r="3.5" />
+      <path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6" strokeLinecap="round" />
     </svg>
   );
 }
