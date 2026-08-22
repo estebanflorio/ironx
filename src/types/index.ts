@@ -19,6 +19,7 @@ export interface Routine {
   name: string;
   exercises: RoutineExercise[];
   createdAt: number;
+  order: number;
 }
 
 export interface SetLog {

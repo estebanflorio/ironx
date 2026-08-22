@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useRoutines } from '../hooks/useRoutines';
-import { RoutineExercise } from '../types';
+import { Routine, RoutineExercise } from '../types';
 
 const EMPTY_EXERCISE: RoutineExercise = {
   exerciseId: '',
@@ -12,24 +12,57 @@ const EMPTY_EXERCISE: RoutineExercise = {
 };
 
 export default function Rutinas() {
-  const { routines, loading, addRoutine, removeRoutine } = useRoutines();
-  const [creating, setCreating] = useState(false);
+  const { routines, loading, addRoutine, updateRoutine, removeRoutine, moveRoutine } = useRoutines();
+  const [formOpen, setFormOpen] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [name, setName] = useState('');
   const [exercises, setExercises] = useState<RoutineExercise[]>([{ ...EMPTY_EXERCISE }]);
+
+  const resetForm = () => {
+    setFormOpen(false);
+    setEditingId(null);
+    setName('');
+    setExercises([{ ...EMPTY_EXERCISE }]);
+  };
+
+  const startCreate = () => {
+    if (formOpen && !editingId) {
+      resetForm();
+      return;
+    }
+    setEditingId(null);
+    setName('');
+    setExercises([{ ...EMPTY_EXERCISE }]);
+    setFormOpen(true);
+  };
+
+  const startEdit = (r: Routine) => {
+    setEditingId(r.id);
+    setName(r.name);
+    setExercises(r.exercises.map((ex) => ({ ...ex })));
+    setFormOpen(true);
+  };
 
   const updateExercise = (index: number, patch: Partial<RoutineExercise>) => {
     setExercises((prev) => prev.map((ex, i) => (i === index ? { ...ex, ...patch } : ex)));
   };
 
-  const handleCreate = async () => {
+  const removeExercise = (index: number) => {
+    setExercises((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleSave = async () => {
     const clean = exercises
       .filter((ex) => ex.exerciseName.trim())
       .map((ex, i) => ({ ...ex, exerciseId: ex.exerciseId || `${Date.now()}-${i}` }));
     if (!name.trim() || clean.length === 0) return;
-    await addRoutine({ name: name.trim(), exercises: clean });
-    setName('');
-    setExercises([{ ...EMPTY_EXERCISE }]);
-    setCreating(false);
+
+    if (editingId) {
+      await updateRoutine(editingId, { name: name.trim(), exercises: clean });
+    } else {
+      await addRoutine({ name: name.trim(), exercises: clean });
+    }
+    resetForm();
   };
 
   return (
@@ -39,15 +72,26 @@ export default function Rutinas() {
           {routines.length} {routines.length === 1 ? 'rutina' : 'rutinas'}
         </p>
         <button
-          onClick={() => setCreating((v) => !v)}
+          onClick={startCreate}
           className="rounded-lg bg-chalk px-4 py-2 font-mono text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90"
         >
-          {creating ? 'Cerrar' : '+ Nueva rutina'}
+          {formOpen && !editingId ? 'Cerrar' : '+ Nueva rutina'}
         </button>
       </div>
 
-      {creating && (
+      {formOpen && (
         <div className="flex flex-col gap-4 rounded-2xl border border-border bg-surface p-4">
+          <div className="flex items-center justify-between">
+            <p className="font-mono text-[11px] uppercase tracking-widest2 text-chalk">
+              {editingId ? 'Editando rutina' : 'Rutina nueva'}
+            </p>
+            {editingId && (
+              <button onClick={resetForm} className="font-mono text-[11px] uppercase tracking-widest2 text-muted hover:text-paper">
+                Cancelar edición
+              </button>
+            )}
+          </div>
+
           <input
             className="rounded-md border border-border bg-raised px-3 py-2.5 font-body text-sm text-paper placeholder:text-muted focus:border-chalk"
             placeholder="Nombre de la rutina (ej. Empuje / Día A)"
@@ -58,12 +102,22 @@ export default function Rutinas() {
           <div className="flex flex-col gap-3">
             {exercises.map((ex, i) => (
               <div key={i} className="flex flex-col gap-2 rounded-lg border border-border/60 p-3">
-                <input
-                  className="rounded-md border border-border bg-raised px-3 py-2 font-body text-sm text-paper placeholder:text-muted focus:border-chalk"
-                  placeholder="Ejercicio (ej. Press banca)"
-                  value={ex.exerciseName}
-                  onChange={(e) => updateExercise(i, { exerciseName: e.target.value })}
-                />
+                <div className="flex items-center gap-2">
+                  <input
+                    className="flex-1 rounded-md border border-border bg-raised px-3 py-2 font-body text-sm text-paper placeholder:text-muted focus:border-chalk"
+                    placeholder="Ejercicio (ej. Press banca)"
+                    value={ex.exerciseName}
+                    onChange={(e) => updateExercise(i, { exerciseName: e.target.value })}
+                  />
+                  {exercises.length > 1 && (
+                    <button
+                      onClick={() => removeExercise(i)}
+                      className="font-mono text-[11px] uppercase tracking-widest2 text-ember/80 hover:text-ember"
+                    >
+                      Quitar
+                    </button>
+                  )}
+                </div>
                 <div className="flex gap-2">
                   <LabeledNumber label="Series" value={ex.targetSets} onChange={(v) => updateExercise(i, { targetSets: v })} />
                   <LabeledNumber label="Reps" value={ex.targetReps} onChange={(v) => updateExercise(i, { targetReps: v })} />
@@ -90,10 +144,10 @@ export default function Rutinas() {
           </button>
 
           <button
-            onClick={handleCreate}
+            onClick={handleSave}
             className="rounded-lg bg-paper py-2.5 font-mono text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90"
           >
-            Guardar rutina
+            {editingId ? 'Guardar cambios' : 'Guardar rutina'}
           </button>
         </div>
       )}
@@ -104,9 +158,28 @@ export default function Rutinas() {
         <EmptyState />
       ) : (
         <div className="flex flex-col gap-3">
-          {routines.map((r) => (
-            <div key={r.id} className="flex items-center justify-between rounded-2xl border border-border bg-surface p-4">
-              <div>
+          {routines.map((r, i) => (
+            <div key={r.id} className="flex items-stretch gap-3 rounded-2xl border border-border bg-surface p-4">
+              <div className="flex flex-col justify-center gap-1">
+                <button
+                  onClick={() => moveRoutine(r.id, 'up')}
+                  disabled={i === 0}
+                  className="text-muted hover:text-chalk disabled:opacity-20"
+                  aria-label="Mover arriba"
+                >
+                  <ArrowIcon direction="up" />
+                </button>
+                <button
+                  onClick={() => moveRoutine(r.id, 'down')}
+                  disabled={i === routines.length - 1}
+                  className="text-muted hover:text-chalk disabled:opacity-20"
+                  aria-label="Mover abajo"
+                >
+                  <ArrowIcon direction="down" />
+                </button>
+              </div>
+
+              <div className="flex-1">
                 <p className="font-display text-lg uppercase tracking-tight text-paper">{r.name}</p>
                 <p className="font-mono text-xs text-muted">
                   {r.exercises.length} {r.exercises.length === 1 ? 'ejercicio' : 'ejercicios'}
@@ -119,12 +192,21 @@ export default function Rutinas() {
                   {r.exercises.length > 3 ? '…' : ''}
                 </p>
               </div>
-              <button
-                onClick={() => removeRoutine(r.id)}
-                className="font-mono text-xs uppercase tracking-widest2 text-ember/80 hover:text-ember"
-              >
-                Borrar
-              </button>
+
+              <div className="flex flex-col items-end justify-between">
+                <button
+                  onClick={() => startEdit(r)}
+                  className="font-mono text-xs uppercase tracking-widest2 text-muted hover:text-chalk"
+                >
+                  Editar
+                </button>
+                <button
+                  onClick={() => removeRoutine(r.id)}
+                  className="font-mono text-xs uppercase tracking-widest2 text-ember/80 hover:text-ember"
+                >
+                  Borrar
+                </button>
+              </div>
             </div>
           ))}
         </div>
@@ -144,6 +226,24 @@ function LabeledNumber({ label, value, onChange }: { label: string; value: numbe
         onChange={(e) => onChange(Number(e.target.value) || 0)}
       />
     </label>
+  );
+}
+
+function ArrowIcon({ direction }: { direction: 'up' | 'down' }) {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      style={{ transform: direction === 'down' ? 'rotate(180deg)' : undefined }}
+    >
+      <path d="M12 19V5M5 12l7-7 7 7" />
+    </svg>
   );
 }
 
